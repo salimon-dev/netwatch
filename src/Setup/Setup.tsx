@@ -22,7 +22,7 @@ export default function Setup() {
             <Typography.Title level={3}>Salimon - NetWatch</Typography.Title>
           </Col>
           <Col xs={24} style={{ marginTop: 28 }}>
-            <Card title="Login">
+            <Card title="Setup">
               <Form layout="vertical" onFinish={formik.handleSubmit}>
                 <Row gutter={2}>
                   <Col xs={24}>
