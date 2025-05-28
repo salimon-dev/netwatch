@@ -5,11 +5,13 @@ import { useFormik } from "formik";
 import axios, { AxiosError } from "axios";
 import type { IAuthResponse } from "../specs";
 import { storeAuthResponse } from "../Store/auth";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { setupHttpClient } from "../Store/rest";
 
-export default function Login() {
+export default function Setup() {
   const [error, setError] = useState<string>();
+  const navigate = useNavigate();
   const formik = useFormik({
     validationSchema: yup.object({
       username: yup.string().required(),
@@ -28,7 +30,7 @@ export default function Login() {
       try {
         const response = await axios
           .post<IAuthResponse>(
-            "/auth/login",
+            "/admin/setup",
             { username: values.username, password: values.password },
             { baseURL: values.nexus }
           )
@@ -37,6 +39,7 @@ export default function Login() {
         response.nexus = values.nexus;
         storeAuthResponse(response);
         setupHttpClient();
+        navigate("/");
       } catch (err) {
         const error = err as AxiosError;
         if (!error.response) {
@@ -53,7 +56,7 @@ export default function Login() {
   });
   return (
     <Row style={{ justifyContent: "center", alignItems: "center", height: "100vh" }}>
-      <Col xs={22} md={12} lg={8}>
+      <Col xs={22} md={16} lg={10} xl={8}>
         <Row gutter={4}>
           <Col xs={24} style={{ textAlign: "center" }}>
             <LogoIcon style={{ width: 128 }} />
@@ -62,9 +65,9 @@ export default function Login() {
             <Typography.Title level={3}>Salimon - NetWatch</Typography.Title>
           </Col>
           <Col xs={24} style={{ marginTop: 28 }}>
-            <Card title="Login">
+            <Card title="Setup">
               <Form layout="vertical" onFinish={formik.handleSubmit}>
-                <Row>
+                <Row gutter={2}>
                   {error && (
                     <Col xs={24} style={{ marginBottom: 12 }}>
                       <Alert message={error} type="error" />
@@ -144,7 +147,7 @@ export default function Login() {
                   </Col>
                   <Col xs={24}>
                     <Button type="primary" htmlType="submit" loading={formik.isSubmitting}>
-                      Login
+                      Setup
                     </Button>
                   </Col>
                 </Row>
