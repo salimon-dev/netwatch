@@ -20,7 +20,13 @@ import { usePermissions } from "../Store/Hooks";
 import type { ItemType, MenuItemType } from "antd/es/menu/interface";
 import { clearAuth } from "../Store/auth";
 import EditUser from "./Users/EditUser";
-import { showInvitationsMenu, showPermissionsMenu, showTransactionsMenu, showUsersMenu } from "./utils";
+import Permissions from "./Permissions/Permissions";
+import {
+  showInvitationsMenu,
+  showPermissionsMenu,
+  showTransactionsMenu,
+  showUsersMenu,
+} from "../Helpers/permissions";
 
 const { Header, Content, Sider } = Layout;
 
@@ -139,6 +145,7 @@ export default function Dashboard() {
             <Route path="/users/:id" element={<EditUser />} />
             <Route path="/invitations" element={<Invitations />} />
             <Route path="/transactions" element={<Transactions />} />
+            <Route path="/permissions" element={<Permissions />} />
           </Routes>
         </Content>
       </Layout>

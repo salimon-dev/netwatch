@@ -57,3 +57,21 @@ export interface IInvitation {
 export interface IInvitationView extends IInvitation {
   created_by_username: string;
 }
+
+export interface ITransaction {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  amount: number;
+  fee: number;
+  status: number;
+  source_id: number;
+  target_id: number;
+  category: string;
+  description: string;
+}
+
+export interface ITransactionView extends ITransaction {
+  source_username: string;
+  target_username: string;
+}
