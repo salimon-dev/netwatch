@@ -1,5 +1,7 @@
 import { useAtomValue } from "jotai";
 import { accessTokenAtom, permissionsAtom } from "./store";
+import { useContext } from "react";
+import { NotificationContext } from "../Components/Notification";
 
 export function useAccessToken() {
   const accessToken = useAtomValue(accessTokenAtom);
@@ -22,4 +24,9 @@ export function useHasPermission(permissions: string[]) {
     if (userPermission.permission === "keymaker") return true;
     return permissions.includes(userPermission.permission);
   });
+}
+
+export function useNotification() {
+  const { api } = useContext(NotificationContext);
+  return api;
 }

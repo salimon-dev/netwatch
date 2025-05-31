@@ -1,26 +1,35 @@
-import { Form, Input } from "antd";
+import { Col, Input, Row, Typography } from "antd";
 import { useFormikContext } from "formik";
 
 interface Props {
   name: string;
   label: string;
-  type?: "number" | "text";
 }
-export default function TextInput({ name, label, type = "text" }: Props) {
+export default function TextInput({ name, label }: Props) {
   const formik = useFormikContext<{ [key: string]: string }>();
   return (
-    <Form.Item
-      name={name}
-      label={label}
-      initialValue={formik.values[name]}
-      help={formik.touched[name] && formik.errors[name] ? formik.errors[name] : undefined}
-    >
-      <Input
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        value={formik.values[name]}
-        type={type}
-      />
-    </Form.Item>
+    <Row gutter={[4, 4]}>
+      <Col xs={24}>
+        <Typography.Text type={formik.touched[name] && formik.errors[name] ? "danger" : undefined}>
+          {label}
+        </Typography.Text>
+      </Col>
+      <Col xs={24}>
+        <Input
+          name={name}
+          status={formik.touched[name] && formik.errors[name] ? "error" : undefined}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          value={formik.values[name]}
+        />
+      </Col>
+      <Col xs={24} style={{ minHeight: 22 }}>
+        {formik.touched[name] && formik.errors[name] && (
+          <Typography.Text type="danger" style={{ fontSize: 12 }}>
+            {formik.errors[name]}
+          </Typography.Text>
+        )}
+      </Col>
+    </Row>
   );
 }

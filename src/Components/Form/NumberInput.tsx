@@ -1,13 +1,12 @@
-import { Col, Row, Select, Typography } from "antd";
+import { Col, Input, Row, Typography } from "antd";
 import { useFormikContext } from "formik";
 
 interface Props {
   name: string;
   label: string;
-  options: { value: string | boolean | number; label: string }[];
 }
-export default function SelectInput({ name, label, options }: Props) {
-  const formik = useFormikContext<{ [key: string]: string | number | boolean }>();
+export default function NumberInput({ name, label }: Props) {
+  const formik = useFormikContext<{ [key: string]: number }>();
   return (
     <Row gutter={[4, 4]}>
       <Col xs={24}>
@@ -16,13 +15,12 @@ export default function SelectInput({ name, label, options }: Props) {
         </Typography.Text>
       </Col>
       <Col xs={24}>
-        <Select
-          style={{ width: "100%" }}
+        <Input
+          name={name}
           status={formik.touched[name] && formik.errors[name] ? "error" : undefined}
-          onChange={(val) => formik.setFieldValue(name, val)}
+          onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values[name]}
-          options={options}
         />
       </Col>
       <Col xs={24} style={{ minHeight: 22 }}>

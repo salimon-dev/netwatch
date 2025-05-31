@@ -1,12 +1,16 @@
 import { Col, Row, Select, Typography } from "antd";
 import { useFormikContext } from "formik";
+import { useRef } from "react";
 
 interface Props {
   name: string;
   label: string;
-  options: { value: string | boolean | number; label: string }[];
+  loading: boolean;
+  onSearch: (value: string) => Promise<void>;
+  options: { value: string; label: string }[];
 }
-export default function SelectInput({ name, label, options }: Props) {
+export default function SearchInput({ name, label, loading, onSearch, options }: Props) {
+  const debounce = useRef<number>(null);
   const formik = useFormikContext<{ [key: string]: string | number | boolean }>();
   return (
     <Row gutter={[4, 4]}>
@@ -18,11 +22,21 @@ export default function SelectInput({ name, label, options }: Props) {
       <Col xs={24}>
         <Select
           style={{ width: "100%" }}
-          status={formik.touched[name] && formik.errors[name] ? "error" : undefined}
-          onChange={(val) => formik.setFieldValue(name, val)}
-          onBlur={formik.handleBlur}
           value={formik.values[name]}
+          showSearch
+          onSearch={(value) => {
+            if (debounce.current) {
+              clearTimeout(debounce.current);
+            }
+            debounce.current = setTimeout(() => {
+              onSearch(value);
+            }, 250);
+          }}
+          onChange={(val) => formik.setFieldValue(name, val)}
+          filterOption={false}
           options={options}
+          defaultActiveFirstOption={false}
+          loading={loading}
         />
       </Col>
       <Col xs={24} style={{ minHeight: 22 }}>

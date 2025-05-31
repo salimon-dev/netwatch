@@ -47,8 +47,8 @@ export interface IInvitation {
   id: string;
   created_by: string;
   code: string;
-  usage_remaining: string;
-  expires_at: string;
+  usage_remaining: number;
+  expires_at?: string;
   status: number;
   created_at: string;
   updated_at: string;

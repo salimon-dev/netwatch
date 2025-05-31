@@ -8,6 +8,7 @@ import { Provider } from "jotai";
 import { BrowserRouter } from "react-router-dom";
 import { loadAuth } from "./Store/auth.ts";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import NotificationProvider from "./Components/Notification.tsx";
 
 const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } });
 
@@ -15,12 +16,14 @@ loadAuth();
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </BrowserRouter>
-    </QueryClientProvider>
+    <NotificationProvider>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <Provider store={store}>
+            <App />
+          </Provider>
+        </BrowserRouter>
+      </QueryClientProvider>
+    </NotificationProvider>
   </StrictMode>
 );
