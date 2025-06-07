@@ -1,14 +1,20 @@
 import { Button, Card, Col, Row, Space, Table } from "antd";
-import { EditOutlined, PlusOutlined } from "@ant-design/icons";
+import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { httpClient } from "../../Store/rest";
 import type { ICollection, IUser } from "../../specs";
 import { dateStringToHuman } from "../../time";
+import ConfirmModal from "../../Components/ConfirmDialog";
+import { deleteUser } from "../../Rest/users";
+import { useNotification } from "../../Store/Hooks";
 
 const pageSize = 15;
 export default function Users() {
+  const [deleting, setDeleting] = useState<IUser>();
+  const notification = useNotification();
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const { data, isLoading } = useQuery({
@@ -45,6 +51,9 @@ export default function Users() {
             >
               <EditOutlined />
             </Button>
+            <Button type="text" shape="circle" onClick={() => setDeleting(item)}>
+              <DeleteOutlined />
+            </Button>
           </Space>
         ),
       };
@@ -67,6 +76,21 @@ export default function Users() {
         </Space>
       }
     >
+      <ConfirmModal
+        open={!!deleting}
+        title="Delete User"
+        description={`Are you sure want to delete user ${deleting?.username}?`}
+        onCancel={() => {
+          setDeleting(undefined);
+        }}
+        onConfirm={async () => {
+          if (!deleting) return;
+          await deleteUser(deleting.id);
+          setDeleting(undefined);
+          notification.success({ message: "Deleted!", description: "User deleted successfully!" });
+          queryClient.refetchQueries({ queryKey: ["users"] });
+        }}
+      />
       <Row gutter={2}>
         <Col xs={24}>
           <Table

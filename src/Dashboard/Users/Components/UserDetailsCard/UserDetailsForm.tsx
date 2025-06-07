@@ -11,6 +11,7 @@ import PasswordInput from "../../../../Components/Form/PasswordInput";
 import SelectInput from "../../../../Components/Form/SelectInput";
 import NumberInput from "../../../../Components/Form/NumberInput";
 import InvitationSearchInput from "../../../../Components/Form/InvitationSearchInput";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   user?: IUser;
@@ -18,6 +19,7 @@ interface Props {
 }
 export default function UserDetailsForm({ user, onUpdate }: Props) {
   const notification = useNotification();
+  const nvaigate = useNavigate();
   return (
     <Formik
       initialValues={{
@@ -53,7 +55,13 @@ export default function UserDetailsForm({ user, onUpdate }: Props) {
           });
           formik.resetForm({ values });
         } else {
-          await createUser(values);
+          const result = await createUser(values);
+          notification.success({
+            message: "Created successfully!",
+            description: `user ${values.username} created successfully!`,
+            placement: "bottomLeft",
+          });
+          nvaigate(`/users/${result.id}`);
         }
         onUpdate();
       }}

@@ -17,6 +17,7 @@ export async function updatePermission(id: string, params: Partial<CreatePermiss
 
 export interface SearchPermissionsParams extends SearchParams {
   user_id?: string;
+  permission?: string;
 }
 export async function searchPermissions(params: SearchPermissionsParams) {
   return httpClient.get<ICollection<IPermission>>(`/admin/permissions`, { params }).then((res) => res.data);

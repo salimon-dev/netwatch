@@ -15,7 +15,7 @@ export default function PasswordInput({ name, label }: Props) {
         </Typography.Text>
       </Col>
       <Col xs={24}>
-        <Input
+        <Input.Password
           name={name}
           status={formik.touched[name] && formik.errors[name] ? "error" : undefined}
           onChange={formik.handleChange}
