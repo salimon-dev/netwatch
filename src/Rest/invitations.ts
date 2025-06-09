@@ -7,7 +7,7 @@ export interface InvitationSearchParams extends SearchParams {
 }
 export async function searchInvitations(params: InvitationSearchParams) {
   return await httpClient
-    .get<ICollection<IInvitationView>>("/admin/invitations/search", { params })
+    .get<ICollection<IInvitationView>>("/admin/invitations", { params })
     .then((response) => response.data);
 }
 

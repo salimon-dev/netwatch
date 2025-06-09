@@ -16,6 +16,7 @@ export default function NumberInput({ name, label }: Props) {
       </Col>
       <Col xs={24}>
         <Input
+          type="number"
           name={name}
           status={formik.touched[name] && formik.errors[name] ? "error" : undefined}
           onChange={formik.handleChange}

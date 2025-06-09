@@ -5,12 +5,15 @@ import UserSearchInput from "../../Components/Form/UserSearchInput";
 import NumberInput from "../../Components/Form/NumberInput";
 import TextInput from "../../Components/Form/TextInput";
 import SelectInput from "../../Components/Form/SelectInput";
+import { useQueryClient } from "@tanstack/react-query";
+import { createTransaction } from "../../Rest/transactions";
 
 interface Props {
   open: boolean;
   onClose: () => void;
 }
 export default function CreateTransactionModal({ onClose, open }: Props) {
+  const queryClient = useQueryClient();
   return (
     <Modal title="Submit new transaction" open={open} onCancel={onClose} footer={null} destroyOnHidden>
       <Formik
@@ -31,7 +34,8 @@ export default function CreateTransactionModal({ onClose, open }: Props) {
           category: yup.string().required(),
         })}
         onSubmit={async (values) => {
-          console.log(values);
+          await createTransaction(values);
+          queryClient.refetchQueries({ queryKey: ["transactions"] });
           onClose();
         }}
       >

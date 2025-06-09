@@ -3,11 +3,10 @@ import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { httpClient } from "../../Store/rest";
-import type { ICollection, IUser } from "../../specs";
+import type { IUser } from "../../specs";
 import { dateStringToHuman } from "../../time";
 import ConfirmModal from "../../Components/ConfirmDialog";
-import { deleteUser } from "../../Rest/users";
+import { deleteUser, searchUsers } from "../../Rest/users";
 import { useNotification } from "../../Store/Hooks";
 
 const pageSize = 15;
@@ -20,9 +19,7 @@ export default function Users() {
   const { data, isLoading } = useQuery({
     queryKey: ["users", page],
     queryFn: async () => {
-      const result = httpClient
-        .get<ICollection<IUser>>("/admin/users/search", { params: { page, pageSize } })
-        .then((response) => response.data);
+      const result = searchUsers({ page, page_size: pageSize }).then((response) => response.data);
       return result;
     },
   });
@@ -30,7 +27,7 @@ export default function Users() {
   function tableData() {
     if (isLoading) return [];
     if (!data) return [];
-    return data.data.map((item, i) => {
+    return data.map((item, i) => {
       return {
         key: item.id,
         num: (page - 1) * pageSize + i + 1,

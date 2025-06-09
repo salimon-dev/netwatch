@@ -41,7 +41,7 @@ export default function UserDetailsForm({ user, onUpdate }: Props) {
         is_public: yup.boolean().required(),
         credit: yup.number().required(),
         score: yup.number().required(),
-        invitation_id: yup.string().required(),
+        invitation_id: yup.string().optional(),
       })}
       onSubmit={async (values, formik) => {
         if (user) {
