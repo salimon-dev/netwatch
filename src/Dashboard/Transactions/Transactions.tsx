@@ -2,11 +2,11 @@ import { Button, Card, Col, Row, Space, Table } from "antd";
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import CreateTransactionModal from "./CreateTransactionModal";
-import type { ITransaction } from "../../specs";
+import { transactionStatuses, type ITransaction } from "../../specs";
 import UpdateTransactionModal from "./UpdateTransactionModal";
 import { useQuery } from "@tanstack/react-query";
 import { searchTransactions } from "../../Rest/transactions";
-import { dateStringToHuman } from "../../time";
+import { tsToDateString } from "../../time";
 
 const pageSize = 25;
 export default function Transactions() {
@@ -29,12 +29,13 @@ export default function Transactions() {
       return {
         key: item.id,
         num: (page - 1) * pageSize + index + 1,
-        source: item.source_id,
-        target: item.target_id,
+        source: item.source_username,
+        target: item.target_username,
         category: item.category,
         amount: `${item.amount} (${item.fee} fee)`,
-        created_at: dateStringToHuman(item.created_at),
-        updated_at: dateStringToHuman(item.updated_at),
+        status: transactionStatuses.find((record) => record.value === item.status)!.label,
+        created_at: tsToDateString(item.created_at),
+        updated_at: tsToDateString(item.updated_at),
         actions: (
           <Space>
             <Button shape="circle" type="text">
@@ -76,6 +77,7 @@ export default function Transactions() {
               { key: "target", dataIndex: "target", title: "target" },
               { key: "amount", dataIndex: "amount", title: "amount" },
               { key: "category", dataIndex: "category", title: "category" },
+              { key: "status", dataIndex: "status", title: "status" },
               { key: "created_at", dataIndex: "created_at", title: "created at", width: 160 },
               { key: "updated_at", dataIndex: "updated_at", title: "updated at", width: 160 },
               { key: "actions", dataIndex: "actions", title: "" },

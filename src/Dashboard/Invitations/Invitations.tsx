@@ -6,7 +6,7 @@ import type { IInvitation } from "../../specs";
 import UpdatePermissionModal from "./UpdateInvitationModal";
 import { useQuery } from "@tanstack/react-query";
 import { searchInvitations } from "../../Rest/invitations";
-import { dateStringToHuman } from "../../time";
+import { tsToDateString } from "../../time";
 
 const page_size = 15;
 export default function Invitations() {
@@ -30,9 +30,9 @@ export default function Invitations() {
       created_by: item.created_by_username,
       usage_remaining: item.usage_remaining,
       code: item.code,
-      expires_at: dateStringToHuman(item.expires_at),
-      created_at: dateStringToHuman(item.created_at),
-      updated_at: dateStringToHuman(item.updated_at),
+      expires_at: tsToDateString(item.expires_at),
+      created_at: tsToDateString(item.created_at),
+      updated_at: tsToDateString(item.updated_at),
       actions: (
         <Actions
           setEditing={() => setUpdating(item)}

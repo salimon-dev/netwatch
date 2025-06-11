@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import type { IUser } from "../../specs";
-import { dateStringToHuman } from "../../time";
+import { tsToDateString } from "../../time";
 import ConfirmModal from "../../Components/ConfirmDialog";
 import { deleteUser, searchUsers } from "../../Rest/users";
 import { useNotification } from "../../Store/Hooks";
@@ -35,8 +35,8 @@ export default function Users() {
         credit: item.credit,
         score: item.score,
         is_public: item.is_public ? "yes" : "no",
-        registered_at: dateStringToHuman(item.registered_at),
-        updated_at: dateStringToHuman(item.updated_at),
+        registered_at: tsToDateString(item.registered_at),
+        updated_at: tsToDateString(item.updated_at),
         actions: (
           <Space>
             <Button

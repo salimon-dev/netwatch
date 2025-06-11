@@ -7,6 +7,7 @@ import TextInput from "../../Components/Form/TextInput";
 import SelectInput from "../../Components/Form/SelectInput";
 import { useQueryClient } from "@tanstack/react-query";
 import { createTransaction } from "../../Rest/transactions";
+import { transactionStatuses } from "../../specs";
 
 interface Props {
   open: boolean;
@@ -58,15 +59,7 @@ export default function CreateTransactionModal({ onClose, open }: Props) {
                 <TextInput name="category" label="category" />
               </Col>
               <Col xs={24}>
-                <SelectInput
-                  name="status"
-                  label="Status"
-                  options={[
-                    { value: 1, label: "pending" },
-                    { value: 2, label: "rejected" },
-                    { value: 3, label: "accepted" },
-                  ]}
-                />
+                <SelectInput name="status" label="Status" options={transactionStatuses} />
               </Col>
               <Col xs={24}>
                 <Space>

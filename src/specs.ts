@@ -24,23 +24,23 @@ export interface IUser {
   credit: number;
   invitation_id?: string;
   status: number;
-  registered_at: string;
-  updated_at: string;
+  registered_at: number;
+  updated_at: number;
 }
 
 export interface IProfile {
   id: string;
   username: string;
-  registered_at: string;
-  updated_at: string;
+  registered_at: number;
+  updated_at: number;
 }
 
 export interface IPermission {
   id: string;
   user_id: string;
   permission: string;
-  created_at: string;
-  updated_at: string;
+  created_at: number;
+  updated_at: number;
 }
 
 export interface IInvitation {
@@ -48,20 +48,26 @@ export interface IInvitation {
   created_by: string;
   code: string;
   usage_remaining: number;
-  expires_at?: string;
+  expires_at?: number;
   status: number;
-  created_at: string;
-  updated_at: string;
+  created_at: number;
+  updated_at: number;
 }
 
 export interface IInvitationView extends IInvitation {
   created_by_username: string;
 }
 
+export const transactionStatuses = [
+  { value: 1, label: "pending" },
+  { value: 2, label: "accepted" },
+  { value: 3, label: "rejected" },
+];
+
 export interface ITransaction {
   id: string;
-  created_at: string;
-  updated_at: string;
+  created_at: number;
+  updated_at: number;
   amount: number;
   fee: number;
   status: number;

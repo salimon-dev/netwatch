@@ -3,7 +3,7 @@ import { Formik, Form } from "formik";
 import { Button, Card, Col, Descriptions, Row } from "antd";
 import { SaveOutlined } from "@ant-design/icons";
 import type { IUser } from "../../../../specs";
-import { dateStringToHuman } from "../../../../time";
+import { tsToDateString } from "../../../../time";
 import { createUser, updateUser, type UserCreateParams } from "../../../../Rest/users";
 import { useNotification } from "../../../../Store/Hooks";
 import TextInput from "../../../../Components/Form/TextInput";
@@ -137,8 +137,8 @@ interface UserStaticDataProps {
 function UserStaticData({ user }: UserStaticDataProps) {
   return (
     <Descriptions>
-      <Descriptions.Item label="Registered at">{dateStringToHuman(user.registered_at)}</Descriptions.Item>
-      <Descriptions.Item label="Last updated at">{dateStringToHuman(user.updated_at)}</Descriptions.Item>
+      <Descriptions.Item label="Registered at">{tsToDateString(user.registered_at)}</Descriptions.Item>
+      <Descriptions.Item label="Last updated at">{tsToDateString(user.updated_at)}</Descriptions.Item>
     </Descriptions>
   );
 }

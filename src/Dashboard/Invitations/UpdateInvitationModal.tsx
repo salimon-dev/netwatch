@@ -23,7 +23,7 @@ export default function UpdateInvitationModal({ onClose, invitation }: Props) {
     validationSchema: yup.object({
       code: yup.string().max(16),
       usage_remaining: yup.number().min(0),
-      expires_at: yup.string().optional(),
+      expires_at: yup.number().optional(),
       status: yup.number().required(),
     }),
     onSubmit: async (values) => {
@@ -66,7 +66,7 @@ export default function UpdateInvitationModal({ onClose, invitation }: Props) {
                 mode="date"
                 style={{ width: "100%" }}
                 onChange={(date) => {
-                  formik.setFieldValue("expires_at", date.format("YYYY/MM/DD HH:mm"));
+                  formik.setFieldValue("expires_at", date.unix());
                 }}
                 showTime
                 showSecond={false}

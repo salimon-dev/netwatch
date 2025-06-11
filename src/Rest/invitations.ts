@@ -14,7 +14,7 @@ export async function searchInvitations(params: InvitationSearchParams) {
 export interface CreateInvitationParams {
   code: string;
   usage_remaining: number;
-  expires_at?: string;
+  expires_at?: number;
   status: number;
 }
 export async function createInvitation(params: CreateInvitationParams) {

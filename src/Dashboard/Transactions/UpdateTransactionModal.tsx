@@ -5,7 +5,7 @@ import UserSearchInput from "../../Components/Form/UserSearchInput";
 import NumberInput from "../../Components/Form/NumberInput";
 import TextInput from "../../Components/Form/TextInput";
 import SelectInput from "../../Components/Form/SelectInput";
-import type { ITransaction } from "../../specs";
+import { transactionStatuses, type ITransaction } from "../../specs";
 
 interface Props {
   onClose: () => void;
@@ -61,15 +61,7 @@ export default function UpdateTransactionModal({ onClose, transaction }: Props) 
                 <TextInput name="category" label="category" />
               </Col>
               <Col xs={24}>
-                <SelectInput
-                  name="status"
-                  label="Status"
-                  options={[
-                    { value: 1, label: "pending" },
-                    { value: 2, label: "rejected" },
-                    { value: 3, label: "accepted" },
-                  ]}
-                />
+                <SelectInput name="status" label="Status" options={transactionStatuses} />
               </Col>
               <Col xs={24}>
                 <Space>

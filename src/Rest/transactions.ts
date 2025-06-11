@@ -1,4 +1,4 @@
-import type { ICollection, ITransaction } from "../specs";
+import type { ICollection, ITransaction, ITransactionView } from "../specs";
 import { httpClient } from "../Store/rest";
 import type { SearchParams } from "./common";
 
@@ -39,6 +39,6 @@ export interface SearchTransactionParams extends SearchParams {
 
 export async function searchTransactions(params: SearchTransactionParams) {
   return httpClient
-    .get<ICollection<ITransaction>>(`/admin/transactions`, { params })
+    .get<ICollection<ITransactionView>>(`/admin/transactions`, { params })
     .then((response) => response.data);
 }
