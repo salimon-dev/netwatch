@@ -53,7 +53,7 @@ export default function Login() {
   });
   return (
     <Row style={{ justifyContent: "center", alignItems: "center", height: "100vh" }}>
-      <Col xs={22} md={12} lg={8}>
+      <Col xs={22} md={16} lg={10} xl={8}>
         <Row gutter={4}>
           <Col xs={24} style={{ textAlign: "center" }}>
             <LogoIcon style={{ width: 128 }} />
@@ -88,7 +88,7 @@ export default function Login() {
                               formik.setFieldValue("nexus", "https://salimon.net/nexus");
                               break;
                             case "development":
-                              formik.setFieldValue("nexus", "http://localhost:5000");
+                              formik.setFieldValue("nexus", "http://dev.salimon.net/nexus");
                               break;
                             default:
                               formik.setFieldValue("nexus", "");

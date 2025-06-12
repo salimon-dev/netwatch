@@ -91,7 +91,7 @@ export default function Setup() {
                               formik.setFieldValue("nexus", "https://salimon.net/nexus");
                               break;
                             case "development":
-                              formik.setFieldValue("nexus", "http://localhost:5000");
+                              formik.setFieldValue("nexus", "http://dev.salimon.net/nexus");
                               break;
                             default:
                               formik.setFieldValue("nexus", "");
