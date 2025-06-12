@@ -28,6 +28,18 @@ export interface IUser {
   updated_at: number;
 }
 
+export const UserStatusActive = 1;
+export const UserStatusInactive = 2;
+
+export const userStatusColor: { [key: number]: string } = {
+  1: "success",
+  2: "error",
+};
+export const userStatusText: { [key: number]: string } = {
+  1: "Active",
+  2: "Inactive",
+};
+
 export interface IProfile {
   id: string;
   username: string;
@@ -41,6 +53,9 @@ export interface IPermission {
   permission: string;
   created_at: number;
   updated_at: number;
+}
+export interface IPermissionView extends IPermission {
+  username: string;
 }
 
 export interface IInvitation {
@@ -63,6 +78,22 @@ export const transactionStatuses = [
   { value: 2, label: "accepted" },
   { value: 3, label: "rejected" },
 ];
+
+export const transactionStatusText: { [key: number]: string } = {
+  1: "pending",
+  2: "accepted",
+  3: "rejected",
+};
+
+export const transactionStatusColor: { [key: number]: string } = {
+  1: "proccessing",
+  2: "success",
+  3: "error",
+};
+
+export const TransactionStatusPending = 1;
+export const TransactionStatusAccepted = 2;
+export const TransactionStatusRejected = 3;
 
 export interface ITransaction {
   id: string;

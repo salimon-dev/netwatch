@@ -1,4 +1,4 @@
-import type { ICollection, IPermission } from "../specs";
+import type { ICollection, IPermission, IPermissionView } from "../specs";
 import { httpClient } from "../Store/rest";
 import type { SearchParams } from "./common";
 
@@ -20,7 +20,9 @@ export interface SearchPermissionsParams extends SearchParams {
   permission?: string;
 }
 export async function searchPermissions(params: SearchPermissionsParams) {
-  return httpClient.get<ICollection<IPermission>>(`/admin/permissions`, { params }).then((res) => res.data);
+  return httpClient
+    .get<ICollection<IPermissionView>>(`/admin/permissions`, { params })
+    .then((res) => res.data);
 }
 
 export async function deletePermission(id: string) {

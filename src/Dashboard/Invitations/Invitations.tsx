@@ -6,7 +6,7 @@ import type { IInvitation } from "../../specs";
 import UpdatePermissionModal from "./UpdateInvitationModal";
 import { useQuery } from "@tanstack/react-query";
 import { searchInvitations } from "../../Rest/invitations";
-import { tsToDateString } from "../../time";
+import { tsToDateString } from "../../helpers";
 
 const page_size = 15;
 export default function Invitations() {

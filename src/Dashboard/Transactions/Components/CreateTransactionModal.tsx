@@ -1,13 +1,13 @@
 import { Button, Col, Modal, Row, Space } from "antd";
 import { Form, Formik } from "formik";
 import * as yup from "yup";
-import UserSearchInput from "../../Components/Form/UserSearchInput";
-import NumberInput from "../../Components/Form/NumberInput";
-import TextInput from "../../Components/Form/TextInput";
-import SelectInput from "../../Components/Form/SelectInput";
+import UserSearchInput from "../../../Components/Form/UserSearchInput";
+import NumberInput from "../../../Components/Form/NumberInput";
+import TextInput from "../../../Components/Form/TextInput";
+import SelectInput from "../../../Components/Form/SelectInput";
 import { useQueryClient } from "@tanstack/react-query";
-import { createTransaction } from "../../Rest/transactions";
-import { transactionStatuses } from "../../specs";
+import { createTransaction } from "../../../Rest/transactions";
+import { transactionStatuses } from "../../../specs";
 
 interface Props {
   open: boolean;

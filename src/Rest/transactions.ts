@@ -15,10 +15,6 @@ export async function createTransaction(params: CreateTransactionParams) {
   return httpClient.put<ITransaction>("/admin/transactions", params).then((response) => response.data);
 }
 
-export async function updateTransaction(id: string, params: Partial<CreateTransactionParams>) {
-  return httpClient.put<ITransaction>(`/admin/transactions/${id}`, params).then((response) => response.data);
-}
-
 export async function deleteTransaction(id: string) {
   return httpClient.delete(`/admin/transactions/${id}`).then((response) => response.data);
 }
@@ -41,4 +37,8 @@ export async function searchTransactions(params: SearchTransactionParams) {
   return httpClient
     .get<ICollection<ITransactionView>>(`/admin/transactions`, { params })
     .then((response) => response.data);
+}
+
+export async function updateTransactionStatus(id: string, status: "accept" | "reject") {
+  return httpClient.post(`/admin/transactions/${id}/${status}`).then((response) => response.data);
 }

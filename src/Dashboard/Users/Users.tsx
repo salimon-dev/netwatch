@@ -4,10 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import type { IUser } from "../../specs";
-import { tsToDateString } from "../../time";
+import { shortenNumber, tsToDateString } from "../../helpers";
 import ConfirmModal from "../../Components/ConfirmDialog";
 import { deleteUser, searchUsers } from "../../Rest/users";
 import { useNotification } from "../../Store/Hooks";
+import UserStatus from "./Components/UserStatus";
 
 const pageSize = 15;
 export default function Users() {
@@ -32,8 +33,9 @@ export default function Users() {
         key: item.id,
         num: (page - 1) * pageSize + i + 1,
         username: item.username,
-        credit: item.credit,
-        score: item.score,
+        credit: shortenNumber(item.credit),
+        score: shortenNumber(item.score),
+        status: <UserStatus user={item} />,
         is_public: item.is_public ? "yes" : "no",
         registered_at: tsToDateString(item.registered_at),
         updated_at: tsToDateString(item.updated_at),
@@ -94,12 +96,13 @@ export default function Users() {
             columns={[
               { key: "num", dataIndex: "num", title: "#", width: 60 },
               { key: "username", dataIndex: "username", title: "username" },
+              { key: "status", dataIndex: "status", title: "status", width: 100 },
               { key: "credit", dataIndex: "credit", title: "credit", width: 100 },
               { key: "score", dataIndex: "score", title: "score", width: 100 },
               { key: "is_public", dataIndex: "is_public", title: "is public", width: 100 },
               { key: "registered_at", dataIndex: "registered_at", title: "registered at", width: 160 },
               { key: "updated_at", dataIndex: "updated_at", title: "updated at", width: 160 },
-              { key: "actions", dataIndex: "actions", title: "" },
+              { key: "actions", dataIndex: "actions", title: "", width: 80 },
             ]}
             dataSource={tableData()}
             loading={isLoading}

@@ -1,26 +1,40 @@
-import { Button, Card, Col, Row, Space, Table } from "antd";
-import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
+import { Button, Card, Col, Row, Space, Table, Tooltip } from "antd";
+import { CheckOutlined, CloseOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import { useState } from "react";
-import CreateTransactionModal from "./CreateTransactionModal";
-import { transactionStatuses, type ITransaction } from "../../specs";
-import UpdateTransactionModal from "./UpdateTransactionModal";
+import CreateTransactionModal from "./Components/CreateTransactionModal";
+import { TransactionStatusPending, type ITransaction } from "../../specs";
 import { useQuery } from "@tanstack/react-query";
-import { searchTransactions } from "../../Rest/transactions";
-import { tsToDateString } from "../../time";
+import { deleteTransaction, searchTransactions, updateTransactionStatus } from "../../Rest/transactions";
+import { shortenNumber, tsToDateString } from "../../helpers";
+import ConfirmModal from "../../Components/ConfirmDialog";
+import TransactionStatus from "./Components/TransactionStatus";
 
 const pageSize = 25;
 export default function Transactions() {
   const [creating, setCreating] = useState(false);
-  const [updating, setUpdating] = useState<ITransaction>();
+  const [deleting, setDeleting] = useState<ITransaction>();
 
   const [page, setPage] = useState(1);
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["transactions", page],
     queryFn: async () => {
       const response = await searchTransactions({ page, page_size: pageSize });
       return response;
     },
   });
+
+  const [submitting, setSubmitting] = useState<string>();
+  async function submitTransaction(id: string, status: "accept" | "reject") {
+    setSubmitting(id);
+    try {
+      await updateTransactionStatus(id, status);
+      refetch();
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setSubmitting(undefined);
+    }
+  }
 
   function dataSource() {
     if (isLoading) return [];
@@ -29,18 +43,35 @@ export default function Transactions() {
       return {
         key: item.id,
         num: (page - 1) * pageSize + index + 1,
-        source: item.source_username,
-        target: item.target_username,
+        source: <Tooltip title={item.source_id}>{item.source_username}</Tooltip>,
+        target: <Tooltip title={item.target_id}>{item.target_username}</Tooltip>,
         category: item.category,
-        amount: `${item.amount} (${item.fee} fee)`,
-        status: transactionStatuses.find((record) => record.value === item.status)!.label,
+        amount: `${shortenNumber(item.amount)} (${shortenNumber(item.fee)} fee)`,
+        status: <TransactionStatus transaction={item} />,
         created_at: tsToDateString(item.created_at),
         updated_at: tsToDateString(item.updated_at),
         actions: (
           <Space>
-            <Button shape="circle" type="text">
-              <EditOutlined />
-            </Button>
+            {item.status === TransactionStatusPending && (
+              <Button
+                shape="circle"
+                type="text"
+                onClick={() => submitTransaction(item.id, "accept")}
+                loading={submitting === item.id}
+              >
+                <CheckOutlined />
+              </Button>
+            )}
+            {item.status === TransactionStatusPending && (
+              <Button
+                shape="circle"
+                type="text"
+                onClick={() => submitTransaction(item.id, "reject")}
+                loading={submitting === item.id}
+              >
+                <CloseOutlined />
+              </Button>
+            )}
             <Button shape="circle" type="text">
               <DeleteOutlined />
             </Button>
@@ -67,7 +98,21 @@ export default function Transactions() {
     >
       <Row>
         <CreateTransactionModal open={creating} onClose={() => setCreating(false)} />
-        <UpdateTransactionModal onClose={() => setUpdating(undefined)} transaction={updating} />
+        <ConfirmModal
+          open={!!deleting}
+          description={`Are you sure you want to delete this transaction?`}
+          title="Delete transaction"
+          onCancel={() => setDeleting(undefined)}
+          onConfirm={async () => {
+            try {
+              await deleteTransaction(deleting!.id);
+            } catch (err) {
+              console.log(err);
+            } finally {
+              setDeleting(undefined);
+            }
+          }}
+        />
         <Col xs={24}>
           <Table
             loading={isLoading}

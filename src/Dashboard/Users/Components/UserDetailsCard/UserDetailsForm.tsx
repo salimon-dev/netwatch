@@ -3,7 +3,7 @@ import { Formik, Form } from "formik";
 import { Button, Card, Col, Descriptions, Row } from "antd";
 import { SaveOutlined } from "@ant-design/icons";
 import type { IUser } from "../../../../specs";
-import { tsToDateString } from "../../../../time";
+import { tsToDateString } from "../../../../helpers";
 import { createUser, updateUser, type UserCreateParams } from "../../../../Rest/users";
 import { useNotification } from "../../../../Store/Hooks";
 import TextInput from "../../../../Components/Form/TextInput";

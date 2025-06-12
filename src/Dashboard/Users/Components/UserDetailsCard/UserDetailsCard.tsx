@@ -23,7 +23,7 @@ export default function UserDetailsCard({ userId }: Props) {
     return (
       <UserDetailsForm
         onUpdate={() => {
-          console.log("update");
+          console.debug("update");
         }}
       />
     );
@@ -32,7 +32,7 @@ export default function UserDetailsCard({ userId }: Props) {
       <UserDetailsForm
         user={userData}
         onUpdate={() => {
-          console.log("update");
+          console.debug("update");
         }}
       />
     );
