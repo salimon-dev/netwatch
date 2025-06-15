@@ -112,3 +112,13 @@ export interface ITransactionView extends ITransaction {
   source_username: string;
   target_username: string;
 }
+
+export interface IAccessKey {
+  id: string;
+  name: string;
+  value: string;
+  username: string;
+  user_id: string;
+  created_at: number;
+  updated_at: number;
+}

@@ -28,6 +28,13 @@ export function showPermissionsMenu(permissions: IPermission[]) {
   });
 }
 
+export function showAccessKeysMenu(permissions: IPermission[]) {
+  const validPermissions = ["access-keys:full", "access-keys:search", "keymaker"];
+  return permissions.some((item) => {
+    return validPermissions.includes(item.permission);
+  });
+}
+
 export const permissionsTree: TreeDataNode[] = [
   {
     title: "users:full",

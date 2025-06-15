@@ -4,6 +4,7 @@ import {
   ClusterOutlined,
   FileOutlined,
   HomeOutlined,
+  KeyOutlined,
   LockOutlined,
   UserOutlined,
 } from "@ant-design/icons";
@@ -22,11 +23,13 @@ import { clearAuth } from "../Store/auth";
 import EditUser from "./Users/EditUser";
 import Permissions from "./Permissions/Permissions";
 import {
+  showAccessKeysMenu,
   showInvitationsMenu,
   showPermissionsMenu,
   showTransactionsMenu,
   showUsersMenu,
 } from "../Helpers/permissions";
+import AccessKeys from "./AccessKeys/AccessKeys";
 
 const { Header, Content, Sider } = Layout;
 
@@ -93,6 +96,16 @@ export default function Dashboard() {
         },
       });
     }
+    if (showAccessKeysMenu(permissions)) {
+      result.push({
+        label: "Access Keys",
+        icon: <KeyOutlined />,
+        key: "/access-keys",
+        onClick: () => {
+          navigate("/access-keys");
+        },
+      });
+    }
     return result;
   }, [permissions, navigate]);
   return (
@@ -146,6 +159,7 @@ export default function Dashboard() {
             <Route path="/invitations" element={<Invitations />} />
             <Route path="/transactions" element={<Transactions />} />
             <Route path="/permissions" element={<Permissions />} />
+            <Route path="/access-keys" element={<AccessKeys />} />
           </Routes>
         </Content>
       </Layout>
