@@ -27,7 +27,7 @@ export default function CreateAccessKeyModal({ onClose, open }: Props) {
         })}
         onSubmit={async (values) => {
           const result = await createAccessKey(values);
-          queryClient.refetchQueries({ queryKey: ["transactions"] });
+          queryClient.refetchQueries({ queryKey: ["access-keys"] });
           setAccessKey(result.value);
         }}
       >
@@ -51,9 +51,16 @@ export default function CreateAccessKeyModal({ onClose, open }: Props) {
               <Col xs={24}>
                 <Space>
                   <Button onClick={onClose}>Cancel</Button>
-                  <Button type="primary" htmlType="submit" disabled={!dirty} loading={isSubmitting}>
-                    {accessKey ? "OK" : "Submit"}
-                  </Button>
+                  {!accessKey && (
+                    <Button type="primary" htmlType="submit" disabled={!dirty} loading={isSubmitting}>
+                      Submit
+                    </Button>
+                  )}
+                  {accessKey && (
+                    <Button type="primary" disabled={!dirty} onClick={onClose}>
+                      OK
+                    </Button>
+                  )}
                 </Space>
               </Col>
             </Row>
