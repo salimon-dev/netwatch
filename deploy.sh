@@ -18,5 +18,4 @@ aws s3 rm s3://$BUCKET_NAME --recursive
 
 echo "📤 Uploading React app to s3://$BUCKET_NAME ..."
 aws s3 sync $BUILD_DIR s3://$BUCKET_NAME --delete
-aws cloudfront create-invalidation --distribution-id ERQ6AG42ZXA5U --paths "/*"
 echo "✅ Deployment to $ENV completed successfully."

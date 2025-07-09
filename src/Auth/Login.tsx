@@ -7,6 +7,7 @@ import type { IAuthResponse } from "../specs";
 import { storeAuthResponse } from "../Store/auth";
 import { useState } from "react";
 import { setupHttpClient } from "../Store/rest";
+import { getNetworkEntryPoint } from "../consts";
 
 export default function Login() {
   const [error, setError] = useState<string>();
@@ -82,17 +83,7 @@ export default function Login() {
                     >
                       <Select
                         onChange={(value) => {
-                          formik.setFieldValue("network", value);
-                          switch (value) {
-                            case "official":
-                              formik.setFieldValue("nexus", "https://api.salimon.net/nexus");
-                              break;
-                            case "development":
-                              formik.setFieldValue("nexus", "https://dev-api.salimon.net/nexus");
-                              break;
-                            default:
-                              formik.setFieldValue("nexus", "");
-                          }
+                          formik.setFieldValue("network", getNetworkEntryPoint(value));
                         }}
                         onBlur={formik.handleBlur}
                         options={[

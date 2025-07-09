@@ -38,8 +38,8 @@ Resources:
         MaxTTL: 0
         MinTTL: 0
         ParametersInCacheKeyAndForwardedToOrigin:
-          EnableAcceptEncodingGzip: true
-          EnableAcceptEncodingBrotli: true
+          EnableAcceptEncodingGzip: false
+          # EnableAcceptEncodingBrotli: true
           HeadersConfig:
             HeaderBehavior: none
           CookiesConfig:
@@ -59,7 +59,7 @@ Resources:
         DefaultCacheBehavior:
           TargetOriginId: S3Origin
           ViewerProtocolPolicy: redirect-to-https
-          CachePolicyId: !Ref AWS::CloudFront::CachePolicy.CachingOptimized
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6 # AWS::CloudFront::CachePolicy.CachingOptimized
         CacheBehaviors:
           - PathPattern: index.html
             TargetOriginId: S3Origin

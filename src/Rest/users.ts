@@ -5,7 +5,7 @@ import type { SearchParams } from "./common";
 export interface UserCreateParams {
   username: string;
   password: string;
-  base_url: string;
+  hook_url: string;
   description: string;
   is_public: boolean;
   credit: number;

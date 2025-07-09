@@ -30,7 +30,7 @@ export default function UserDetailsForm({ user, onUpdate }: Props) {
         is_public: user ? user.is_public : true,
         credit: user ? user.credit : 0,
         score: user ? user.score : 0,
-        base_url: user ? user.base_url : "",
+        hook_url: user ? user.hook_url : "",
         invitation_id: user ? user.invitation_id : undefined,
       }}
       validationSchema={yup.object({
@@ -118,7 +118,7 @@ export default function UserDetailsForm({ user, onUpdate }: Props) {
                 <NumberInput name="score" label="Score" />
               </Col>
               <Col xs={24} md={12} lg={8}>
-                <TextInput name="base_url" label="Base URL" />
+                <TextInput name="hook_url" label="Hook URL" />
               </Col>
               <Col xs={24} md={12} lg={8}>
                 <InvitationSearchInput name="invitation_id" label="Invitation" />

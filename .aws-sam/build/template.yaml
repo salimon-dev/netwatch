@@ -31,6 +31,22 @@ Resources:
           Action: s3:GetObject
           Resource:
             Fn::Sub: ${WebappBucket.Arn}/*
+  NoCachePolicy:
+    Type: AWS::CloudFront::CachePolicy
+    Properties:
+      CachePolicyConfig:
+        Name: NoCachePolicyForIndex
+        DefaultTTL: 0
+        MaxTTL: 0
+        MinTTL: 0
+        ParametersInCacheKeyAndForwardedToOrigin:
+          EnableAcceptEncodingGzip: false
+          HeadersConfig:
+            HeaderBehavior: none
+          CookiesConfig:
+            CookieBehavior: none
+          QueryStringsConfig:
+            QueryStringBehavior: none
   CloudFrontDistribution:
     Type: AWS::CloudFront::Distribution
     Properties:
@@ -47,9 +63,12 @@ Resources:
         DefaultCacheBehavior:
           TargetOriginId: S3Origin
           ViewerProtocolPolicy: redirect-to-https
-          ForwardedValues:
-            QueryString: false
-            Cookies:
-              Forward: none
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6
+        CacheBehaviors:
+        - PathPattern: index.html
+          TargetOriginId: S3Origin
+          ViewerProtocolPolicy: redirect-to-https
+          CachePolicyId:
+            Ref: NoCachePolicy
         ViewerCertificate:
           CloudFrontDefaultCertificate: true
