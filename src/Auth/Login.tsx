@@ -83,7 +83,8 @@ export default function Login() {
                     >
                       <Select
                         onChange={(value) => {
-                          formik.setFieldValue("network", getNetworkEntryPoint(value));
+                          formik.setFieldValue("network", value);
+                          formik.setFieldValue("nexus", getNetworkEntryPoint(value));
                         }}
                         onBlur={formik.handleBlur}
                         options={[

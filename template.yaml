@@ -29,23 +29,25 @@ Resources:
             Principal: "*"
             Action: "s3:GetObject"
             Resource: !Sub "${WebappBucket.Arn}/*"
-  NoCachePolicy:
-    Type: AWS::CloudFront::CachePolicy
+  CloudFrontRewriteFunction:
+    Type: AWS::CloudFront::Function
     Properties:
-      CachePolicyConfig:
-        Name: NoCachePolicyForIndex
-        DefaultTTL: 0
-        MaxTTL: 0
-        MinTTL: 0
-        ParametersInCacheKeyAndForwardedToOrigin:
-          EnableAcceptEncodingGzip: false
-          # EnableAcceptEncodingBrotli: true
-          HeadersConfig:
-            HeaderBehavior: none
-          CookiesConfig:
-            CookieBehavior: none
-          QueryStringsConfig:
-            QueryStringBehavior: none
+      Name: !Sub "rewritespa-netwatch-${Env}"
+      AutoPublish: true
+      FunctionCode: |
+        function handler(event) {
+          var request = event.request;
+          var uri = request.uri;
+
+          // If path does not contain a file extension, rewrite to /index.html
+          if (!uri.includes('.') && !uri.endsWith('/')) {
+            request.uri = '/index.html';
+          }
+          return request;
+        }
+      FunctionConfig:
+        Comment: "Rewrite all SPA routes to index.html"
+        Runtime: cloudfront-js-1.0
   CloudFrontDistribution:
     Type: AWS::CloudFront::Distribution
     Properties:
@@ -60,10 +62,8 @@ Resources:
           TargetOriginId: S3Origin
           ViewerProtocolPolicy: redirect-to-https
           CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6 # AWS::CloudFront::CachePolicy.CachingOptimized
-        CacheBehaviors:
-          - PathPattern: index.html
-            TargetOriginId: S3Origin
-            ViewerProtocolPolicy: redirect-to-https
-            CachePolicyId: !Ref NoCachePolicy
+          FunctionAssociations:
+            - EventType: viewer-request
+              FunctionARN: !GetAtt CloudFrontRewriteFunction.FunctionMetadata.FunctionARN
         ViewerCertificate:
           CloudFrontDefaultCertificate: true
