@@ -85,10 +85,10 @@ export default function Login() {
                           formik.setFieldValue("network", value);
                           switch (value) {
                             case "official":
-                              formik.setFieldValue("nexus", "https://salimon.net/nexus");
+                              formik.setFieldValue("nexus", "https://api.salimon.net/nexus");
                               break;
                             case "development":
-                              formik.setFieldValue("nexus", "https://dev.salimon.net/nexus");
+                              formik.setFieldValue("nexus", "https://dev-api.salimon.net/nexus");
                               break;
                             default:
                               formik.setFieldValue("nexus", "");
