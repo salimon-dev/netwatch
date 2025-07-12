@@ -25,3 +25,4 @@ production.toml
 *.njsproj
 *.sln
 *.sw?
+.aws-sam

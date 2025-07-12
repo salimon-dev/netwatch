@@ -14,9 +14,9 @@ sam build
 echo "Deploying to $ENV environment..."
 
 if [ "$ENV" == "dev" ]; then
-  sam deploy --config-file ./development.toml
+  sam deploy --no-confirm-changeset --config-file ./development.toml
 else
-  sam deploy --config-file ./production.toml
+  sam deploy --no-confirm-changeset --config-file ./production.toml
 fi
 
 echo "✅ Deployment to $ENV completed successfully."

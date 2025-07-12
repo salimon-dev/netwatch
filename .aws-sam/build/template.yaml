@@ -44,6 +44,42 @@ Resources:
       FunctionConfig:
         Comment: Rewrite all SPA routes to index.html
         Runtime: cloudfront-js-1.0
+  NoCachePolicy:
+    Type: AWS::CloudFront::CachePolicy
+    Properties:
+      CachePolicyConfig:
+        Name:
+          Fn::Sub: no-cache-policy-${Env}
+        DefaultTTL: 0
+        MaxTTL: 0
+        MinTTL: 0
+        ParametersInCacheKeyAndForwardedToOrigin:
+          EnableAcceptEncodingGzip: false
+          EnableAcceptEncodingBrotli: false
+          HeadersConfig:
+            HeaderBehavior: none
+          CookiesConfig:
+            CookieBehavior: none
+          QueryStringsConfig:
+            QueryStringBehavior: none
+  StaticAssetsCachePolicy:
+    Type: AWS::CloudFront::CachePolicy
+    Properties:
+      CachePolicyConfig:
+        Name:
+          Fn::Sub: static-assets-policy-${Env}
+        DefaultTTL: 86400
+        MaxTTL: 31536000
+        MinTTL: 86400
+        ParametersInCacheKeyAndForwardedToOrigin:
+          EnableAcceptEncodingGzip: true
+          EnableAcceptEncodingBrotli: true
+          HeadersConfig:
+            HeaderBehavior: none
+          CookiesConfig:
+            CookieBehavior: none
+          QueryStringsConfig:
+            QueryStringBehavior: none
   CloudFrontDistribution:
     Type: AWS::CloudFront::Distribution
     Properties:
@@ -60,12 +96,39 @@ Resources:
         DefaultCacheBehavior:
           TargetOriginId: S3Origin
           ViewerProtocolPolicy: redirect-to-https
-          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6
+          CachePolicyId:
+            Ref: NoCachePolicy
           FunctionAssociations:
           - EventType: viewer-request
             FunctionARN:
               Fn::GetAtt:
               - CloudFrontRewriteFunction
               - FunctionMetadata.FunctionARN
+        CacheBehaviors:
+        - PathPattern: '*.js'
+          TargetOriginId: S3Origin
+          ViewerProtocolPolicy: redirect-to-https
+          CachePolicyId:
+            Ref: StaticAssetsCachePolicy
+        - PathPattern: '*.css'
+          TargetOriginId: S3Origin
+          ViewerProtocolPolicy: redirect-to-https
+          CachePolicyId:
+            Ref: StaticAssetsCachePolicy
+        - PathPattern: '*.png'
+          TargetOriginId: S3Origin
+          ViewerProtocolPolicy: redirect-to-https
+          CachePolicyId:
+            Ref: StaticAssetsCachePolicy
+        - PathPattern: '*.svg'
+          TargetOriginId: S3Origin
+          ViewerProtocolPolicy: redirect-to-https
+          CachePolicyId:
+            Ref: StaticAssetsCachePolicy
+        - PathPattern: '*.woff2'
+          TargetOriginId: S3Origin
+          ViewerProtocolPolicy: redirect-to-https
+          CachePolicyId:
+            Ref: StaticAssetsCachePolicy
         ViewerCertificate:
           CloudFrontDefaultCertificate: true
