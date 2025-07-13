@@ -2,7 +2,7 @@ import * as yup from "yup";
 import { Formik, Form } from "formik";
 import { Button, Card, Col, Descriptions, Row } from "antd";
 import { SaveOutlined } from "@ant-design/icons";
-import type { IUser } from "../../../../specs";
+import { userVisibilities, type IUser } from "../../../../specs";
 import { tsToDateString } from "../../../../helpers";
 import { createUser, updateUser, type UserCreateParams } from "../../../../Rest/users";
 import { useNotification } from "../../../../Store/Hooks";
@@ -102,16 +102,7 @@ export default function UserDetailsForm({ user, onUpdate }: Props) {
                 />
               </Col>
               <Col xs={24} md={12} lg={8}>
-                <SelectInput
-                  name="visibility"
-                  label="Visibility"
-                  options={[
-                    { value: 1, label: "Public" },
-                    { value: 2, label: "Username Invites" },
-                    { value: 3, label: "Token Invites" },
-                    { value: 4, label: "Private" },
-                  ]}
-                />
+                <SelectInput name="visibility" label="Visibility" options={userVisibilities} />
               </Col>
               <Col xs={24} md={12} lg={8}>
                 <NumberInput name="credit" label="Credit" />
