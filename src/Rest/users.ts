@@ -7,7 +7,7 @@ export interface UserCreateParams {
   password: string;
   hook_url: string;
   description: string;
-  is_public: boolean;
+  visibility: number;
   credit: number;
   score: number;
   invitation_code?: string;

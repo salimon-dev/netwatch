@@ -15,6 +15,9 @@ export default function UserDetailsCard({ userId }: Props) {
       const user = await httpClient.get<IUser>(`/admin/users/${userId}`).then((response) => response.data);
       return user;
     },
+    refetchOnMount: true,
+    refetchOnReconnect: true,
+    refetchOnWindowFocus: true,
   });
 
   if (isLoading) return <Card title="Details" loading={true}></Card>;

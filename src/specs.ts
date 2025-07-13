@@ -19,13 +19,25 @@ export interface IUser {
   password: string;
   hook_url: string;
   description: string;
-  is_public: boolean;
+  visibility: number;
   score: number;
   credit: number;
   invitation_id?: string;
   status: number;
   registered_at: number;
   updated_at: number;
+}
+
+export const userVisibilities = [
+  { value: 1, label: "Public" },
+  { value: 2, label: "Username Invites" },
+  { value: 3, label: "Token Invites" },
+  { value: 4, label: "Private" },
+];
+export function userVisibilityString(value: number) {
+  const item = userVisibilities.find((x) => x.value === value);
+  if (!item) return "N.D";
+  return item.label;
 }
 
 export const UserStatusActive = 1;

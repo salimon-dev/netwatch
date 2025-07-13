@@ -27,7 +27,7 @@ export default function UserDetailsForm({ user, onUpdate }: Props) {
         password: "",
         status: user ? user.status : 1,
         description: user ? user.description : "",
-        is_public: user ? user.is_public : true,
+        visibility: user ? user.visibility : 1,
         credit: user ? user.credit : 0,
         score: user ? user.score : 0,
         hook_url: user ? user.hook_url : "",
@@ -38,7 +38,7 @@ export default function UserDetailsForm({ user, onUpdate }: Props) {
         password: yup.string().optional(),
         description: yup.string().required(),
         status: yup.number().required(),
-        is_public: yup.boolean().required(),
+        visibility: yup.number().required(),
         credit: yup.number().required(),
         score: yup.number().required(),
         invitation_id: yup.string().optional(),
@@ -103,11 +103,13 @@ export default function UserDetailsForm({ user, onUpdate }: Props) {
               </Col>
               <Col xs={24} md={12} lg={8}>
                 <SelectInput
-                  name="is_public"
-                  label="Is public"
+                  name="visibility"
+                  label="Visibility"
                   options={[
-                    { value: true, label: "yes" },
-                    { value: false, label: "no" },
+                    { value: 1, label: "Public" },
+                    { value: 2, label: "Username Invites" },
+                    { value: 3, label: "Token Invites" },
+                    { value: 4, label: "Private" },
                   ]}
                 />
               </Col>

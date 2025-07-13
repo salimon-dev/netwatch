@@ -3,7 +3,7 @@ import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import type { IUser } from "../../specs";
+import { userVisibilityString, type IUser } from "../../specs";
 import { shortenNumber, tsToDateString } from "../../helpers";
 import ConfirmModal from "../../Components/ConfirmDialog";
 import { deleteUser, searchUsers } from "../../Rest/users";
@@ -36,7 +36,7 @@ export default function Users() {
         credit: shortenNumber(item.credit),
         score: shortenNumber(item.score),
         status: <UserStatus user={item} />,
-        is_public: item.is_public ? "yes" : "no",
+        visiblity: userVisibilityString(item.visibility),
         registered_at: tsToDateString(item.registered_at),
         updated_at: tsToDateString(item.updated_at),
         actions: (
@@ -99,7 +99,7 @@ export default function Users() {
               { key: "status", dataIndex: "status", title: "status", width: 100 },
               { key: "credit", dataIndex: "credit", title: "credit", width: 100 },
               { key: "score", dataIndex: "score", title: "score", width: 100 },
-              { key: "is_public", dataIndex: "is_public", title: "is public", width: 100 },
+              { key: "visiblity", dataIndex: "visiblity", title: "is public", width: 100 },
               { key: "registered_at", dataIndex: "registered_at", title: "registered at", width: 160 },
               { key: "updated_at", dataIndex: "updated_at", title: "updated at", width: 160 },
               { key: "actions", dataIndex: "actions", title: "", width: 80 },
